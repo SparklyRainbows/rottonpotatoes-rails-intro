@@ -15,15 +15,33 @@ class MoviesController < ApplicationController
   end
 
   def index
+    puts params[:home]
+    if params[:home] != nil and params[:home] = 1
+      puts'from home'
+      session[:ratings] = params[:ratings]
+      session[:sortBy] = params[:sortBy]
+    else
+      puts 'not'
+      params[:ratings] = session[:ratings]
+      params[:sortBy] = session[:sortBy]
+    end
+    
     ratings = params[:ratings]
+    sortBy = params[:sortBy]
+    
     if ratings == nil
       @ratings_to_show = []
     else
-      @ratings_to_show = params[:ratings].keys
+      @ratings_to_show = ratings.keys
     end
+    
     @movies = Movie.with_ratings(@ratings_to_show)
     
-    @movies = Movie.get_order(@movies, params[:sortBy])
+    @movies = Movie.get_order(@movies, sortBy)
+    
+    if params[:home] == nil or params[:home] != 1
+      redirect_to movies_path({"home":1,"sortBy":sortBy, "ratings":ratings})
+    end
   end
 
   def new
