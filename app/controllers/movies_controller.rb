@@ -4,12 +4,6 @@ class MoviesController < ApplicationController
   attr_accessor :ratings_to_show
   attr_accessor :sorted
   
-  def initialize
-    @all_ratings = Movie.all_ratings
-    @ratings_to_show = Movie.all_ratings
-    @sorted = nil
-  end
-  
   def show
     id = params[:id] # retrieve movie ID from URI route
     @movie = Movie.find(id) # look up movie by unique ID
@@ -17,6 +11,10 @@ class MoviesController < ApplicationController
   end
 
   def index
+    @all_ratings = Movie.all_ratings
+    @ratings_to_show = Movie.all_ratings
+    @sorted = nil
+    
     if params[:home] != nil and params[:home] = 1
       session[:ratings] = params[:ratings]
       session[:sortBy] = params[:sortBy]
