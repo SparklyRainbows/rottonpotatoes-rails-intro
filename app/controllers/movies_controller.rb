@@ -18,7 +18,7 @@ class MoviesController < ApplicationController
     
     if params[:home] != nil and params[:home] = 1
       session[:ratings] = params[:ratings]
-      session[:sortBy] = params[:sortBy]
+      #session[:sortBy] = params[:sortBy]
     else
       params[:ratings] = session[:ratings]
       params[:sortBy] = session[:sortBy]
@@ -28,6 +28,16 @@ class MoviesController < ApplicationController
     sortBy = params[:sortBy]
     
     @sorted = sortBy
+    if @sorted == nil
+      @sorted = session[:sortBy]
+      sortBy = @sorted
+      puts @sorted
+      if @sorted != nil
+        params[:home] = 1
+      end
+    else
+      session[:sortBy] = @sorted
+    end
     
     if ratings == nil
       @ratings_to_show = @all_ratings
