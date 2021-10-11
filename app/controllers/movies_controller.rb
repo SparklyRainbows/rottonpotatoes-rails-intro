@@ -2,10 +2,12 @@ class MoviesController < ApplicationController
 
   attr_accessor :all_ratings
   attr_accessor :ratings_to_show
+  attr_accessor :sorted
   
   def initialize
     @all_ratings = Movie.all_ratings
     @ratings_to_show = Movie.all_ratings
+    @sorted = nil
   end
   
   def show
@@ -15,13 +17,10 @@ class MoviesController < ApplicationController
   end
 
   def index
-    puts params[:home]
     if params[:home] != nil and params[:home] = 1
-      puts'from home'
       session[:ratings] = params[:ratings]
       session[:sortBy] = params[:sortBy]
     else
-      puts 'not'
       params[:ratings] = session[:ratings]
       params[:sortBy] = session[:sortBy]
     end
@@ -29,8 +28,10 @@ class MoviesController < ApplicationController
     ratings = params[:ratings]
     sortBy = params[:sortBy]
     
+    @sorted = sortBy
+    
     if ratings == nil
-      @ratings_to_show = []
+      @ratings_to_show = @all_ratings
     else
       @ratings_to_show = ratings.keys
     end
