@@ -10,4 +10,12 @@ class Movie < ActiveRecord::Base
   def self.all_ratings
     ['G','PG','PG-13','R']
   end
+  
+  def self.get_order(movies, orderBy)
+    if orderBy != nil
+      movies.order(orderBy)
+    else
+      movies
+    end
+  end
 end

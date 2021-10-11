@@ -22,6 +22,8 @@ class MoviesController < ApplicationController
       @ratings_to_show = params[:ratings].keys
     end
     @movies = Movie.with_ratings(@ratings_to_show)
+    
+    @movies = Movie.get_order(@movies, params[:sortBy])
   end
 
   def new
